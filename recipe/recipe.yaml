@@ -11,7 +11,7 @@ source:
   sha256: a208829f081c1781856ff9d2768554fad1ac0b955e4f2404f33c4d16cc4673fe
 
 build:
-  number: 0
+  number: 1
   skip: win
 
 outputs:
@@ -50,6 +50,7 @@ outputs:
 
     tests:
       - package_contents:
+          strict: true
           files:
             - lib/cmake/Acts/ActsConfigVersion.cmake
             - lib/cmake/Acts/ActsConfig.cmake
@@ -66,6 +67,107 @@ outputs:
             - Acts/*
           lib:
             - ActsCore
+          bin:
+            - this_acts.sh
+            - this_acts_withdeps.sh
+
+  - package:
+      name: ${{ name|lower }}-fatras
+
+    build:
+      script:
+        # due to https://github.com/conda-forge/z5py-feedstock/issues/24 and
+        # PR https://github.com/conda-forge/z5py-feedstock/commit/5fbcb9220d468f0e8f90dd39f3fbb7427dfc5e88
+        - if: osx
+          then: export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+        # ACTS_USE_SYSTEM_LIBS is to avoid ACTS installing with uv
+        - cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DACTS_USE_SYSTEM_LIBS=ON -DACTS_BUILD_PLUGIN_FASTJET=ON -S . -B build
+        - cmake -LH build
+        - cmake --build build --parallel=${CPU_COUNT}
+        - cmake --install build
+    requirements:
+      build:
+        - ${{ stdlib('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - make
+        # Python needed to build codegen components in the build and
+        # Fatras/scripts/generate_particle_data_table.py, it is NOT used
+        # in the library build itself, so can just select a single Python.
+        # c.f. https://github.com/acts-project/acts/blob/d039b6d741bc145ab265e3c4537db07f6ac896d4/codegen/README.md#L3-L4
+        - python 3.13.*
+        - hatchling
+        - numpy
+        - sympy
+        - particle
+      host:
+        - libboost-devel
+        - eigen
+        - fastjet-cxx
+
+    tests:
+      - package_contents:
+          strict: true
+          files:
+            - lib/cmake/Acts/ActsConfigVersion.cmake
+            - lib/cmake/Acts/ActsConfig.cmake
+            - lib/cmake/Acts/Modules/FindFastJet.cmake
+            - lib/cmake/Acts/Modules/FindFilesystem.cmake
+            - lib/cmake/Acts/Modules/FindPythia8.cmake
+            - lib/cmake/Acts/Modules/FindSphinx.cmake
+            - lib/cmake/Acts/Modules/FindTBB.cmake
+            - lib/cmake/Acts/Modules/FindTensorRT.cmake
+            - lib/cmake/Acts/Modules/FindZSTD.cmake
+            - lib/cmake/Acts/Modules/Findonnxruntime.cmake
+            - lib/cmake/Acts/ActsCoreTargets.cmake
+            - lib/cmake/Acts/ActsCoreTargets-release.cmake
+            - lib/cmake/Acts/ActsFatrasTargets-release.cmake
+            - lib/cmake/Acts/ActsFatrasTargets.cmake
+            - lib/cmake/Acts/ActsPluginFastJetTargets-release.cmake
+            - lib/cmake/Acts/ActsPluginFastJetTargets.cmake
+          include:
+            - Acts/*
+            - ActsFatras/Digitization/ChannelMerger.hpp
+            - ActsFatras/Digitization/Channelizer.hpp
+            - ActsFatras/Digitization/DigitizationData.hpp
+            - ActsFatras/Digitization/DigitizationError.hpp
+            - ActsFatras/Digitization/PlanarSurfaceDrift.hpp
+            - ActsFatras/Digitization/PlanarSurfaceMask.hpp
+            - ActsFatras/Digitization/Segmentizer.hpp
+            - ActsFatras/Digitization/UncorrelatedHitSmearer.hpp
+            - ActsFatras/EventData/Barcode.hpp
+            - ActsFatras/EventData/Hit.hpp
+            - ActsFatras/EventData/Particle.hpp
+            - ActsFatras/EventData/ParticleOutcome.hpp
+            - ActsFatras/EventData/ProcessType.hpp
+            - ActsFatras/Kernel/ContinuousProcess.hpp
+            - ActsFatras/Kernel/InteractionList.hpp
+            - ActsFatras/Kernel/PointLikeProcess.hpp
+            - ActsFatras/Kernel/Simulation.hpp
+            - ActsFatras/Kernel/SimulationResult.hpp
+            - ActsFatras/Kernel/detail/SimulationActor.hpp
+            - ActsFatras/Kernel/detail/SimulationError.hpp
+            - ActsFatras/Physics/Decay/NoDecay.hpp
+            - ActsFatras/Physics/ElectroMagnetic/BetheBloch.hpp
+            - ActsFatras/Physics/ElectroMagnetic/BetheHeitler.hpp
+            - ActsFatras/Physics/ElectroMagnetic/PhotonConversion.hpp
+            - ActsFatras/Physics/ElectroMagnetic/Scattering.hpp
+            - ActsFatras/Physics/ElectroMagnetic/detail/GaussianMixture.hpp
+            - ActsFatras/Physics/ElectroMagnetic/detail/GeneralMixture.hpp
+            - ActsFatras/Physics/ElectroMagnetic/detail/Highland.hpp
+            - ActsFatras/Physics/StandardInteractions.hpp
+            - ActsFatras/Selectors/KinematicCasts.hpp
+            - ActsFatras/Selectors/ParticleSelectors.hpp
+            - ActsFatras/Selectors/SelectorHelpers.hpp
+            - ActsFatras/Selectors/SurfaceSelectors.hpp
+            - ActsFatras/Selectors/detail/combine_selectors.hpp
+            - ActsFatras/Utilities/LandauDistribution.hpp
+            - ActsFatras/Utilities/detail/FpeSafeGammaDistribution.hpp
+            - ActsPlugins/FastJet/Jets.hpp
+          lib:
+            - ActsCore
+            - ActsFatras
+            - ActsPluginFastJet
           bin:
             - this_acts.sh
             - this_acts_withdeps.sh
