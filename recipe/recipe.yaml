@@ -40,7 +40,7 @@ outputs:
         # in the library build itself, so can just select a single Python.
         # c.f. https://github.com/acts-project/acts/blob/d039b6d741bc145ab265e3c4537db07f6ac896d4/codegen/README.md#L3-L4
         - python 3.13.*
-        - setuptools
+        - hatchling
         - numpy
         - sympy
         - particle
