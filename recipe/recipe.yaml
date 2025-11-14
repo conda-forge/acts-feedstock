@@ -11,7 +11,7 @@ source:
   sha256: 4b3080c50487a58c993685bc343e6a5971dd9dbc734f895332ccd0c7848c7ea6
 
 build:
-  number: 0
+  number: 1
   skip: win
 
 outputs:
@@ -25,7 +25,7 @@ outputs:
         - if: osx
           then: export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
         # ACTS_USE_SYSTEM_LIBS is to avoid ACTS installing with uv
-        - cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DACTS_USE_SYSTEM_LIBS=ON -S . -B build
+        - cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DACTS_USE_SYSTEM_LIBS=ON -DACTS_BUILD_PLUGIN_FASTJET=ON -S . -B build
         - cmake -LH build
         - cmake --build build --parallel=${CPU_COUNT}
         - cmake --install build
@@ -47,9 +47,11 @@ outputs:
       host:
         - libboost-devel
         - eigen
+        - fastjet-cxx
 
     tests:
       - package_contents:
+          strict: true
           files:
             - lib/cmake/Acts/ActsConfigVersion.cmake
             - lib/cmake/Acts/ActsConfig.cmake
