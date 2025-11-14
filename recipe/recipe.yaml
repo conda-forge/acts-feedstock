@@ -1,6 +1,6 @@
 context:
   name: acts
-  version: "44.1.0"
+  version: "44.2.0"
 
 recipe:
   name: ${{ name }}-suite
@@ -8,7 +8,7 @@ recipe:
 
 source:
   url: https://github.com/acts-project/acts/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 9dddc29fd999381c06e7986b33ec044158c57c59e489f2063d10fddb59ddbbff
+  sha256: 4b3080c50487a58c993685bc343e6a5971dd9dbc734f895332ccd0c7848c7ea6
 
 build:
   number: 0
@@ -40,7 +40,7 @@ outputs:
         # in the library build itself, so can just select a single Python.
         # c.f. https://github.com/acts-project/acts/blob/d039b6d741bc145ab265e3c4537db07f6ac896d4/codegen/README.md#L3-L4
         - python 3.13.*
-        - setuptools
+        - hatchling
         - numpy
         - sympy
         - particle
