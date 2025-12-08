@@ -92,5 +92,5 @@ about:
 extra:
   feedstock-name: acts
   recipe-maintainers:
-    - Snakemonster
     - matthewfeickert
+    - paulgessinger
