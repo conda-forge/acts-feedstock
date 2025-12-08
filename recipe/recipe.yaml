@@ -63,6 +63,7 @@ outputs:
             - lib/cmake/Acts/Modules/FindZSTD.cmake
             - lib/cmake/Acts/Modules/Findonnxruntime.cmake
             - lib/cmake/Acts/ActsCoreTargets.cmake
+            - lib/cmake/Acts/ActsCoreTargets-release.cmake
           include:
             - Acts/*
           lib:
