@@ -54,7 +54,6 @@ outputs:
             - lib/cmake/Acts/ActsConfigVersion.cmake
             - lib/cmake/Acts/ActsConfig.cmake
             - lib/cmake/Acts/Modules/FindFastJet.cmake
-            - lib/cmake/Acts/Modules/FindFilesystem.cmake
             - lib/cmake/Acts/Modules/FindPythia8.cmake
             - lib/cmake/Acts/Modules/FindSphinx.cmake
             - lib/cmake/Acts/Modules/FindTBB.cmake
