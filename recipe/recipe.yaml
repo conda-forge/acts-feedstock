@@ -1,6 +1,6 @@
 context:
   name: acts
-  version: "45.5.1"
+  version: "46.6.0"
 
 recipe:
   name: ${{ name }}-suite
@@ -8,10 +8,10 @@ recipe:
 
 source:
   url: https://github.com/acts-project/acts/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 2c1ac23f768b18bb57014cda96936583149816f312c88fd79e2c92dc1693d7c9
+  sha256: 2e48a05c7f6765e3de25c191f53ebbcf42db82c5e678e4d7ccdbc6548ce2a4f3
 
 build:
-  number: 1
+  number: 0
   skip: win
 
 outputs:
