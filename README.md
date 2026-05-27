@@ -82,6 +82,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-acts--core-green.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-acts--fatras-green.svg)](https://anaconda.org/conda-forge/acts-fatras) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/acts-fatras.svg)](https://anaconda.org/conda-forge/acts-fatras) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/acts-fatras.svg)](https://anaconda.org/conda-forge/acts-fatras) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/acts-fatras.svg)](https://anaconda.org/conda-forge/acts-fatras) |
 
 Installing acts
 ===============
@@ -93,16 +94,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `acts-core` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `acts-core, acts-fatras` can be installed with `conda`:
 
 ```
-conda install acts-core
+conda install acts-core acts-fatras
 ```
 
 or with `mamba`:
 
 ```
-mamba install acts-core
+mamba install acts-core acts-fatras
 ```
 
 It is possible to list all of the versions of `acts-core` available on your platform with `conda`:
