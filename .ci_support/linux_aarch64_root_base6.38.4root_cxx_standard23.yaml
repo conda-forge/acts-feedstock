@@ -18,5 +18,12 @@ libboost_devel:
 - '1.90'
 numpy:
 - '2'
+root_base:
+- 6.38.4
+root_cxx_standard:
+- '23'
 target_platform:
 - linux-aarch64
+zip_keys:
+- - root_base
+  - root_cxx_standard
