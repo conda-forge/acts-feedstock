@@ -11,13 +11,17 @@ source:
   sha256: f13781c4f8420eecf498952ea101100d23fed34fb0f5ad96a4f15c9475b0139b
 
 build:
-  number: 0
-  skip: win
+  number: 1
+  skip:
+    - win
+    # ACTS needs C++23, so only build against the C++23 builds of ROOT
+    - root_cxx_standard != "23"
 
 outputs:
-  - package:
-      name: ${{ name|lower }}-core
-
+  # Build ACTS once with the plugins, then split the installation into the
+  # core library and one package per plugin
+  - staging:
+      name: ${{ name|lower }}-build
     build:
       script:
         # due to https://github.com/conda-forge/z5py-feedstock/issues/24 and
@@ -25,7 +29,7 @@ outputs:
         - if: osx
           then: export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
         # ACTS_USE_SYSTEM_LIBS is to avoid ACTS installing with uv
-        - cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DACTS_USE_SYSTEM_LIBS=ON -S . -B build
+        - cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DACTS_USE_SYSTEM_LIBS=ON -DACTS_BUILD_PLUGIN_ROOT=ON -S . -B build
         - cmake -LH build
         - cmake --build build --parallel=${CPU_COUNT}
         - cmake --install build
@@ -47,6 +51,27 @@ outputs:
       host:
         - libboost-devel
         - eigen
+        - root_base
+        - root_cxx_standard
+
+  - package:
+      name: ${{ name|lower }}-core
+    inherit: ${{ name|lower }}-build
+    build:
+      files:
+        include:
+          - "**"
+        exclude:
+          - lib/libActsPluginRoot*
+          - include/ActsPlugins/Root/**
+          - lib/cmake/Acts/ActsPluginRoot*.cmake
+    # The core library doesn't use ROOT. It is built once per ROOT variant
+    # together with the plugins, which pin it exactly.
+    requirements:
+      ignore_run_exports:
+        from_package:
+          - root_base
+          - root_cxx_standard
 
     tests:
       - package_contents:
@@ -61,6 +86,7 @@ outputs:
             - lib/cmake/Acts/Modules/FindZSTD.cmake
             - lib/cmake/Acts/Modules/Findonnxruntime.cmake
             - lib/cmake/Acts/ActsCoreTargets.cmake
+            - lib/cmake/Acts/ActsCoreDependencies.cmake
           include:
             - Acts/*
           lib:
@@ -68,6 +94,48 @@ outputs:
           bin:
             - this_acts.sh
             - this_acts_withdeps.sh
+
+  - package:
+      name: ${{ name|lower }}-plugin-root
+    inherit: ${{ name|lower }}-build
+    build:
+      string: cxx${{ root_cxx_standard }}_h${{ hash }}_${{ build_number }}
+      files:
+        - lib/libActsPluginRoot*
+        - include/ActsPlugins/Root/**
+        - lib/cmake/Acts/ActsPluginRoot*.cmake
+    requirements:
+      host:
+        - root_base
+        - root_cxx_standard
+      run:
+        - ${{ pin_subpackage(name|lower ~ '-core', exact=True) }}
+        - root_cxx_standard ==${{ root_cxx_standard }}
+
+    tests:
+      - package_contents:
+          files:
+            - lib/cmake/Acts/ActsPluginRootTargets.cmake
+            - lib/cmake/Acts/ActsPluginRootDependencies.cmake
+          include:
+            - ActsPlugins/Root/BlueprintBuilder.hpp
+            - ActsPlugins/Root/TGeoDetectorElement.hpp
+          lib:
+            - ActsPluginRoot
+      - files:
+          recipe:
+            - test-plugin-root/
+        requirements:
+          run:
+            - ${{ compiler('cxx') }}
+            - cmake
+            - make
+            - libboost-devel
+            - eigen
+        script:
+          - cmake -S test-plugin-root -B test-build
+          - cmake --build test-build
+          - ./test-build/acts_plugin_root_test
 
 about:
   homepage: https://acts.readthedocs.io/
