@@ -127,12 +127,18 @@ outputs:
             - test-plugin-root/
         requirements:
           run:
-            - ${{ compiler('cxx') }}
+            # On macOS, root_base pins the clang it was built with (for
+            # cling), which can be older than the default compiler
+            - if: osx
+              then: clangxx_${{ target_platform }}
+              else: ${{ compiler('cxx') }}
             - cmake
             - make
             - libboost-devel
             - eigen
         script:
+          - if: osx
+            then: export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
           - cmake -S test-plugin-root -B test-build
           - cmake --build test-build
           - ./test-build/acts_plugin_root_test
