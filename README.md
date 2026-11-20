@@ -48,17 +48,31 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>osx_64</td>
+              <td>osx_64_root_base6.38.4root_cxx_standard23</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=26725&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_root_base6.38.4root_cxx_standard23" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64</td>
+              <td>osx_64_root_base6.40.2root_cxx_standard23</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=26725&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_root_base6.40.2root_cxx_standard23" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_root_base6.38.4root_cxx_standard23</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=26725&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_root_base6.38.4root_cxx_standard23" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_root_base6.40.2root_cxx_standard23</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=26725&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/acts-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_root_base6.40.2root_cxx_standard23" alt="variant">
                 </a>
               </td>
             </tr>
@@ -75,6 +89,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-acts--core-green.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/acts-core.svg)](https://anaconda.org/conda-forge/acts-core) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-acts--plugin--root-green.svg)](https://anaconda.org/conda-forge/acts-plugin-root) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/acts-plugin-root.svg)](https://anaconda.org/conda-forge/acts-plugin-root) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/acts-plugin-root.svg)](https://anaconda.org/conda-forge/acts-plugin-root) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/acts-plugin-root.svg)](https://anaconda.org/conda-forge/acts-plugin-root) |
 
 Installing acts
 ===============
@@ -93,7 +108,7 @@ How to use
 <summary>With conda</summary>
 
 ```
-conda install acts-core
+conda install acts-core acts-plugin-root
 ```
 
 </details>
@@ -102,7 +117,7 @@ conda install acts-core
 <summary>With mamba</summary>
 
 ```
-mamba install acts-core
+mamba install acts-core acts-plugin-root
 ```
 
 </details>
@@ -112,9 +127,9 @@ mamba install acts-core
 
 ```
 # for adding to your local project
-pixi add acts-core
+pixi add acts-core acts-plugin-root
 # for installing globally
-pixi global install acts-core
+pixi global install acts-core acts-plugin-root
 ```
 
 </details>
